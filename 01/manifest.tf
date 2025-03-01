@@ -31,7 +31,18 @@ resource "google_cloud_run_v2_service" "pdf_converter" {
     }
 
     containers {
-      image = "gcr.io/${var.project_id}/pdf-converter"      
+      image = "gcr.io/${var.project_id}/pdf-converter"
+      resources {
+        cpu_idle = true
+        limits   = { 
+            cpu    = "1000m"
+            memory = "2Gi"
+        }
+      }
+      env {
+        name = "PDF_BUCKET"
+        value = "${var.project_id}-processed"
+      }      
     }
   }
 }
