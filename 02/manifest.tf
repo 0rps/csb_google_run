@@ -10,7 +10,7 @@ locals {
 
   services = {
     lab_report = {
-      name      = "new-lab-report"
+      name      = "lab-report-service"
       is_public = true
     }
     email = {
@@ -106,7 +106,7 @@ resource "google_pubsub_subscription" "email_service_sub" {
   topic = "new-lab-report"
 
   push_config {
-    push_endpoint = google_cloud_run_v2_service.services["email-service"].uri
+    push_endpoint = google_cloud_run_v2_service.services["email"].uri
 
     oidc_token {
       service_account_email = google_service_account.pubsub_invoker.email
@@ -121,7 +121,7 @@ resource "google_pubsub_subscription" "sms_service_sub" {
   topic = "new-lab-report"
 
   push_config {
-    push_endpoint = google_cloud_run_v2_service.services["sms-service"].uri
+    push_endpoint = google_cloud_run_v2_service.services["sms"].uri
 
     oidc_token {
       service_account_email = google_service_account.pubsub_invoker.email
